@@ -1,0 +1,7 @@
+convert /mnt/dados/sandbox/poc-dom/output/675/htmls/1008515.html -> /mnt/dados/sandbox/poc-dom/output/675/pdfs-sem-anexos/1008515.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/output/675/pdfs-sem-anexos/1008515.pdf
+convert /mnt/dados/sandbox/poc-dom/output/675/htmls/1008517.html -> /mnt/dados/sandbox/poc-dom/output/675/pdfs-sem-anexos/1008517.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/output/675/pdfs-sem-anexos/1008517.pdf
+---------------------------- ID: 1008515 ----------------------------------------
+---------------------------- ID: 1008517 ----------------------------------------
+---------------------------- ID: 1008518 ----------------------------------------

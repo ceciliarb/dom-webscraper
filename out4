@@ -1,0 +1,107 @@
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881086.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881086.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881080.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881080.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881088.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881088.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881078.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881078.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/files/1265/881079/to-convert/image002.gif -> /mnt/dados/sandbox/poc-dom/files/1265/881079/pdfs/image002.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/files/1265/881079/pdfs/image002.pdf
+convert /mnt/dados/sandbox/poc-dom/files/1265/881079/to-convert/Processo.rtf -> /mnt/dados/sandbox/poc-dom/files/1265/881079/pdfs/Processo.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/files/1265/881079/pdfs/Processo.pdf
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881079.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881079.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881089.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881089.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/files/1265/881094/to-convert/balancete.rtf -> /mnt/dados/sandbox/poc-dom/files/1265/881094/pdfs/balancete.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/files/1265/881094/pdfs/balancete.pdf
+convert /mnt/dados/sandbox/poc-dom/files/1265/881094/to-convert/image004.gif -> /mnt/dados/sandbox/poc-dom/files/1265/881094/pdfs/image004.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/files/1265/881094/pdfs/image004.pdf
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881094.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881094.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881101.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881101.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881111.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881111.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881090.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881090.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881082.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881082.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881084.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881084.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881085.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881085.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881092.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881092.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881093.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881093.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881095.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881095.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881098.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881098.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881106.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881106.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881108.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881108.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881110.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881110.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881112.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881112.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/files/1265/881113/to-convert/image006.gif -> /mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/image006.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/image006.pdf
+convert /mnt/dados/sandbox/poc-dom/files/1265/881113/to-convert/image008.gif -> /mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/image008.pdf using filter : writer_pdf_Export
+Overwriting: /mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/image008.pdf
+convert /mnt/dados/sandbox/poc-dom/files/1265/881113/to-convert/tab-1.gif -> /mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/tab-1.pdf using filter : draw_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881113.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881113.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881083.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881083.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881087.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881087.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881099.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881099.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881091.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881091.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881097.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881097.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881114.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881114.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881081.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881081.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881096.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881096.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881102.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881102.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881103.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881103.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881104.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881104.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881105.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881105.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881100.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881100.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881107.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881107.pdf using filter : writer_pdf_Export
+convert /mnt/dados/sandbox/poc-dom/output/1265/htmls/881109.html -> /mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881109.pdf using filter : writer_pdf_Export
+input/1265.txt
+---------------------------- ID: 881086 ----------------------------------------
+---------------------------- ID: 881080 ----------------------------------------
+---------------------------- ID: 881088 ----------------------------------------
+---------------------------- ID: 881078 ----------------------------------------
+---------------------------- ID: 881079 ----------------------------------------
+Salvando arquivo: /dom/download?x=/Files/File/docs/2000_12_01_Arq01/Processo.rtf
+Convertendo arquivo: image002.gif
+Convertendo arquivo: Processo.rtf
+Inserindo ao pdf root: Processo
+Mesclando: '/mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881079.pdf' com '/mnt/dados/sandbox/poc-dom/files/1265/881079/pdfs/Processo.pdf'
+---------------------------- ID: 881089 ----------------------------------------
+---------------------------- ID: 881094 ----------------------------------------
+Salvando arquivo: /dom/download?x=/Files/File/docs/2000_12_01_Arq02/balancete.rtf
+Convertendo arquivo: balancete.rtf
+Convertendo arquivo: image004.gif
+Inserindo ao pdf root: balancete
+Mesclando: '/mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881094.pdf' com '/mnt/dados/sandbox/poc-dom/files/1265/881094/pdfs/balancete.pdf'
+---------------------------- ID: 881101 ----------------------------------------
+---------------------------- ID: 881111 ----------------------------------------
+---------------------------- ID: 881090 ----------------------------------------
+---------------------------- ID: 881082 ----------------------------------------
+---------------------------- ID: 881084 ----------------------------------------
+---------------------------- ID: 881085 ----------------------------------------
+---------------------------- ID: 881092 ----------------------------------------
+---------------------------- ID: 881093 ----------------------------------------
+---------------------------- ID: 881095 ----------------------------------------
+---------------------------- ID: 881098 ----------------------------------------
+---------------------------- ID: 881106 ----------------------------------------
+---------------------------- ID: 881108 ----------------------------------------
+---------------------------- ID: 881110 ----------------------------------------
+---------------------------- ID: 881112 ----------------------------------------
+---------------------------- ID: 881113 ----------------------------------------
+Salvando arquivo: /dom/download?x=/Files/File/docs/2000_12_01_Arq03/tab-1.gif
+Salvando arquivo: /dom/download?x=/Files/File/docs/2000_12_01_Arq03/tab-1.gif
+Convertendo arquivo: image006.gif
+Convertendo arquivo: image008.gif
+Convertendo arquivo: tab-1.gif
+Inserindo ao pdf root: tab-1
+Mesclando: '/mnt/dados/sandbox/poc-dom/output/1265/pdfs-sem-anexos/881113.pdf' com '/mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/tab-1.pdf'
+Inserindo ao pdf root: tab-1
+Mesclando: '/mnt/dados/sandbox/poc-dom/output/1265/pdfs-com-anexos/881113.pdf' com '/mnt/dados/sandbox/poc-dom/files/1265/881113/pdfs/tab-1.pdf'
+---------------------------- ID: 881083 ----------------------------------------
+---------------------------- ID: 881087 ----------------------------------------
+---------------------------- ID: 881099 ----------------------------------------
+---------------------------- ID: 881091 ----------------------------------------
+---------------------------- ID: 881097 ----------------------------------------
+---------------------------- ID: 881114 ----------------------------------------
+---------------------------- ID: 881081 ----------------------------------------
+---------------------------- ID: 881096 ----------------------------------------
+---------------------------- ID: 881102 ----------------------------------------
+---------------------------- ID: 881103 ----------------------------------------
+---------------------------- ID: 881104 ----------------------------------------
+---------------------------- ID: 881105 ----------------------------------------
+---------------------------- ID: 881100 ----------------------------------------
+---------------------------- ID: 881107 ----------------------------------------
+---------------------------- ID: 881109 ----------------------------------------
