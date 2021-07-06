@@ -2,7 +2,9 @@
 # requisitos:                               #
 # - sudo apt install libreoffice            #
 # - sudo apt install ghostscript            #
+# -  pip install requests                   #
 # -  pip install beautifulsoup4             #
+# -  pip install html5lib                   #
 #############################################
 import re
 import os
@@ -160,40 +162,37 @@ def clear():
     print("Error: %s" % e.strerror)
 
 def parseFiles(ids, num_edicao=0, bClear=True):
-  if(bClear): 
-    clear()
-  out_dir  = "output/"+str(num_edicao)+"/"
-  edi_file = out_dir+str(num_edicao)+".pdf"
-  edi_dir  = "edicoes/"
-  subprocess.run(["mkdir", "-p", out_dir, edi_dir])
-  paths = []
-  for id in ids:
-    id = int(id)
-    print('---------------------------- ID: %s ----------------------------------------' % str(id))
-    links = preProcess(id, num_edicao)
-    convertAllAnexosToPDF(id, num_edicao)
-    convertAtoToPDF(id, num_edicao)
-    for link in links:
-      print("Inserindo ao pdf root: "+link)
-      insertPDFAnexoToPDFAto(id, num_edicao, link)
-      
-    if links:
-      paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
-    else:
-      paths.append(out_dir+"pdfs-sem-anexos/"+str(id)+".pdf")
-  
-  subprocess.run(["gs", "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-sOutputFile="+edi_dir+str(num_edicao)+".pdf", *paths])
+  try:
+    if(bClear): 
+      clear()
+    out_dir  = "output/"+str(num_edicao)+"/"
+    edi_file = out_dir+str(num_edicao)+".pdf"
+    edi_dir  = "edicoes/"
+    subprocess.run(["mkdir", "-p", out_dir, edi_dir])
+    paths = []
+    for id in ids:
+      id = int(id)
+      print('---------------------------- ID: %s ----------------------------------------' % str(id))
+      links = preProcess(id, num_edicao)
+      convertAllAnexosToPDF(id, num_edicao)
+      convertAtoToPDF(id, num_edicao)
+      for link in links:
+        print("Inserindo ao pdf root: "+link)
+        insertPDFAnexoToPDFAto(id, num_edicao, link)
 
+      if links:
+        paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
+      else:
+        paths.append(out_dir+"pdfs-sem-anexos/"+str(id)+".pdf")
+
+    subprocess.run(["gs", "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-sOutputFile="+edi_dir+str(num_edicao)+".pdf", *paths])
+
+  except Exception as e:
+    print("Erro ao gerar edicao %s" % num_edicao)
+    print("Erro %s" % e)
 
 if __name__ == "__main__":
     import sys
     ids = sys.argv[1:]
     parseFiles(ids)
-    
-    
-    
-    
-    
-    
-    
-    
+
