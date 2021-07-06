@@ -2,6 +2,7 @@
 # requisitos:                               #
 # - sudo apt install libreoffice            #
 # - sudo apt install ghostscript            #
+# - sudo apt install wkhtmltopdf            #
 # -  pip install requests                   #
 # -  pip install beautifulsoup4             #
 # -  pip install html5lib                   #
@@ -12,6 +13,7 @@ import io
 import shutil
 import requests
 import subprocess
+import traceback
 from bs4 import BeautifulSoup, Comment
 
 def find_comment_sibling(soup, inner_text):
@@ -32,7 +34,7 @@ def preProcess(id, num_edicao):
   clean_content = clean_content.replace("980px", "88%")
 
   # extrai link de arquivo de download
-  exts  = '(?:\.doc|\.rtf|\.xls|\.pdf|\.gif)'
+  exts  = '(?:\.doc|\.docx|\.rtf|\.xls|\.pdf|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)'
   regex = r'(<a .{0,50} href\=[\'|\"]\/dom\/.{0,50}Files.*?'+exts+'[\'|\"].{0,20}>.*?<\/a>)'
   links_download = re.findall(regex, clean_content, flags=re.S)
   links_name = []
@@ -40,8 +42,8 @@ def preProcess(id, num_edicao):
     if link:
       link = re.search(r'(href\=[\'|\"]\/dom\/.{0,50}Files.*?'+exts+'[\'|\"])', link, flags=re.S).group(0)
       link = link.replace("href='", "").replace("'", "").replace('href="', '').replace('"', '')
-      path = (link.split('/')[-1]).split('.')[0]
-      ext = (link.split('/')[-1]).split('.')[1]
+      path = ".".join((link.split('/')[-1]).split('.')[0:-1])
+      ext = (link.split('/')[-1]).split('.')[-1]
       links_name.append(path)
       # removendo o link de download
       clean_content = clean_content.replace(link, "#")
@@ -79,7 +81,7 @@ def saveFile(id, num_edicao, url):
     path = url.split('/')[-1]
 
     with open(directory+'/'+path, "wb") as file:
-      if extension not in ['gif', 'jpeg', 'jpg', 'png']:
+      if extension not in ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif']:
         file.write(resp.content)
       else:
         resp.raw.decode_content = True
@@ -90,8 +92,19 @@ def saveFile(id, num_edicao, url):
 
   return path.split('.')[0]
 
-def convertToPDF(file_path, output_path):
-  subprocess.run(["lowriter", "--headless", "--convert-to", "pdf", "--outdir", output_path, file_path])
+def convertToPDF(file_path, output_path, wk=False):
+  if not os.path.exists(output_path):
+    os.makedirs(output_path)
+  ext = (file_path.split('/')[-1]).split('.')[-1]
+  if ext == 'pdf':
+    subprocess.run(["cp", file_path, output_path])
+  else:
+    if wk:
+      file_name = ".".join((file_path.split('/')[-1]).split('.')[0:-1])
+      print("WkHtmlToPdf %s --> %s" % (file_path, output_path + file_name + ".pdf"))
+      subprocess.run(["wkhtmltopdf", file_path, output_path + file_name + ".pdf"])
+    else:
+      subprocess.run(["lowriter", "--headless", "--convert-to", "pdf", "--outdir", output_path, file_path])
 
 def convertAllAnexosToPDF(id, num_edicao):
   curr_dir = os.getcwd()
@@ -110,7 +123,7 @@ def convertAtoToPDF(id, num_edicao):
   curr_dir   = os.getcwd()
   input_dir  = curr_dir + '/output/' + str(num_edicao) + '/htmls/' + str(id) + '.html'
   output_dir = curr_dir + '/output/' + str(num_edicao) + '/pdfs-sem-anexos/'
-  convertToPDF(input_dir, output_dir)
+  convertToPDF(input_dir, output_dir, True)
 
 def mergePDF(pdf_path_1, pdf_path_2, out_path):
   # resolvendo o problema do ghostscript nao aceitar um output igual a um dos inputs
@@ -187,9 +200,9 @@ def parseFiles(ids, num_edicao=0, bClear=True):
 
     subprocess.run(["gs", "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-sOutputFile="+edi_dir+str(num_edicao)+".pdf", *paths])
 
-  except Exception as e:
+  except Exception:
     print("Erro ao gerar edicao %s" % num_edicao)
-    print("Erro %s" % e)
+    print("Erro %s" % traceback.print_exc())
 
 if __name__ == "__main__":
     import sys
