@@ -33,6 +33,10 @@ def preProcess(id, num_edicao):
   # corrige valor de width
   clean_content = clean_content.replace("980px", "88%")
 
+  # alterando cabecalho (grayscale)
+  cabecalho_local = "http://localhost:8000/assets/Logo-dom-Belo-Horizonte_grayscale.jpg"
+  clean_content = clean_content.replace("../imagens/Logo-dom-Belo-Horizonte.jpg", cabecalho_local)
+
   # extrai link de arquivo de download
   exts  = '(?:\.doc|\.docx|\.rtf|\.xls|\.pdf|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)'
   regex = r'(<a .{0,50} href\=[\'|\"]\/dom\/.{0,50}Files.*?'+exts+'[\'|\"].{0,20}>.*?<\/a>)'
@@ -52,7 +56,9 @@ def preProcess(id, num_edicao):
 
   soup = BeautifulSoup(clean_content, 'html5lib')
   # remove tags de layout
-  tags = soup.find_all(href=re.compile("iniciaEdicao"))
+  # cabecalho
+  #  tags = soup.find_all(href=re.compile("iniciaEdicao"))
+  tags = []
   tags = tags + (soup.find_all("td", id="direita"))
   tags = tags + find_comment_sibling(soup, "fim materia")
   tags = tags + soup.select("script")
@@ -88,7 +94,7 @@ def saveFile(id, num_edicao, url):
         shutil.copyfileobj(resp.raw, file)
   else:
     print('Falha ao baixar arquivo "%s"' % url)
-    exit()
+    raise RuntimeError
 
   return path.split('.')[0]
 
@@ -96,13 +102,18 @@ def convertToPDF(file_path, output_path, wk=False):
   if not os.path.exists(output_path):
     os.makedirs(output_path)
   ext = (file_path.split('/')[-1]).split('.')[-1]
+  num_edic = (file_path.split('/')[-1]).split('.')[0]
   if ext == 'pdf':
     subprocess.run(["cp", file_path, output_path])
   else:
     if wk:
       file_name = ".".join((file_path.split('/')[-1]).split('.')[0:-1])
+      dia = 1
+      mes = 1
+      ano = 1
+      texto_rodape = f"Esta é uma reprodução digitalizada do conteúdo presente no DOM nº {num_edic}, de {dia}/{mes}/{ano}.\nhttps://dom-web.pbh.gov.br"
       print("WkHtmlToPdf %s --> %s" % (file_path, output_path + file_name + ".pdf"))
-      subprocess.run(["wkhtmltopdf", file_path, output_path + file_name + ".pdf"])
+      subprocess.run(["wkhtmltopdf", "--footer-font-size", "8", "--footer-center", texto_rodape, file_path, output_path + file_name + ".pdf"])
     else:
       subprocess.run(["lowriter", "--headless", "--convert-to", "pdf", "--outdir", output_path, file_path])
 
@@ -174,7 +185,24 @@ def clear():
   except OSError as e:
     print("Error: %s" % e.strerror)
 
-def parseFiles(ids, num_edicao=0, bClear=True):
+def markAs(num_edic, id, tipo):
+  input_dir = os.curdir+"/input/"
+  if not os.path.exists(input_dir+"done/"):
+    os.makedirs(input_dir+"done/")
+  os.rename(input_dir+num_edic+".txt", input_dir+"done/"+num_edic+".txt")
+  with open(os.curdir+'/logs/'+tipo+'_' + str(id) + ".txt", "a") as text_file:
+    text_file.write(str(num_edic)+"\n")
+
+def markAsDone(path, id):
+  markAs(path, id, 'migradas')
+
+def markAsProblem(path, id):
+  markAs(path, id, 'problemas')
+
+def markAsDoneBefore(path, id):
+  markAs(path, id, 'migradas_anteriormente')
+
+def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True):
   try:
     if(bClear): 
       clear()
@@ -184,25 +212,43 @@ def parseFiles(ids, num_edicao=0, bClear=True):
     subprocess.run(["mkdir", "-p", out_dir, edi_dir])
     paths = []
     for id in ids:
-      id = int(id)
-      print('---------------------------- ID: %s ----------------------------------------' % str(id))
-      links = preProcess(id, num_edicao)
-      convertAllAnexosToPDF(id, num_edicao)
-      convertAtoToPDF(id, num_edicao)
-      for link in links:
-        print("Inserindo ao pdf root: "+link)
-        insertPDFAnexoToPDFAto(id, num_edicao, link)
+      bProblem = False
 
-      if links:
-        paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
+      if os.path.exists(edi_file):
+        print("Edicao ja existe! Pegando proxima edicao")
+        os.rename(path, edi_dir+"/../input/done/"+str(num_edicao)+".pdf")
+        if bMove: markAsDoneBefore(num_edicao, str(start_time))
+        continue
+
       else:
-        paths.append(out_dir+"pdfs-sem-anexos/"+str(id)+".pdf")
+        try:
+          id = int(id)
+          print('---------------------------- ATO: %s ----------------------------------------' % str(id))
+          links = preProcess(id, num_edicao)
+          convertAllAnexosToPDF(id, num_edicao)
+          convertAtoToPDF(id, num_edicao)
+          for link in links:
+            print("Inserindo ao pdf root: "+link)
+            insertPDFAnexoToPDFAto(id, num_edicao, link)
+    
+          if links:
+            paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
+          else:
+            paths.append(out_dir+"pdfs-sem-anexos/"+str(id)+".pdf")
+
+        except RuntimeError as e:
+          print("Erro! Pegando proxima edicao")
+          if bMove: markAsProblem(num_edicao, str(start_time))
+          bProblem = True
+          continue
 
     subprocess.run(["gs", "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-sOutputFile="+edi_dir+str(num_edicao)+".pdf", *paths])
-
+    if bMove and not bProblem: markAsDone(num_edicao, str(start_time))
+    
   except Exception:
     print("Erro ao gerar edicao %s" % num_edicao)
     print("Erro %s" % traceback.print_exc())
+    if bMove: markAsProblem(num_edicao, str(start_time))
 
 if __name__ == "__main__":
     import sys
