@@ -8,7 +8,7 @@ def convertFile(input_file_path, start_time, clear, move):
   with open(input_file_path, 'r') as input_file:
     lines = input_file.read().splitlines()
   num_edicao = input_file_path.split('/')[-1].split('.')[0]
-  print("=================== Edicao: %s ========================" % num_edicao)
+  print("============================ Edicao: %s ==================================================" % num_edicao)
   parseFiles(lines, num_edicao, start_time, clear, move)
 
 if __name__ == "__main__":

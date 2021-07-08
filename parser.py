@@ -23,6 +23,33 @@ def find_comment_sibling(soup, inner_text):
   else:
     return []
 
+def monthStringToNumber(month):
+  return {
+    "Janeiro": 1,
+    "January": 1,
+    "Fevereiro": 2,
+    "February": 2,
+    "Março": 3,
+    "March": 3,
+    "Abril": 4,
+    "April": 4,
+    "Maio": 5,
+    "May": 5,
+    "Junho": 6,
+    "June": 6,
+    "Julho": 7,
+    "July": 7,
+    "Agosto": 8,
+    "August": 8,
+    "Setembro": 9,
+    "September": 9,
+    "Outubro": 10,
+    "October": 10,
+    "Novembro": 11,
+    "November": 11,
+    "Dezembro": 12,
+    "December": 12
+    }.get(month, 0)
 
 def preProcess(id, num_edicao):
   url = "http://portal6.pbh.gov.br/dom/iniciaEdicao.do?method=DetalheArtigo&pk=" + str(id)
@@ -31,7 +58,7 @@ def preProcess(id, num_edicao):
   # remove tags especificas do windows
   clean_content = content.replace("<![if !supportEmptyParas]>", "").replace("<![endif]>", "").replace("<o:p>", "").replace("</o:p>", "")
   # corrige valor de width
-  clean_content = clean_content.replace("980px", "88%")
+  #  clean_content = clean_content.replace("980px", "88%")
 
   # alterando cabecalho (grayscale)
   cabecalho_local = "http://localhost:8000/assets/Logo-dom-Belo-Horizonte_grayscale.jpg"
@@ -65,6 +92,9 @@ def preProcess(id, num_edicao):
   for tag in tags:
     tag.extract()
 
+  arr = soup.select("div.datahoje")[0].string.split(" ")
+  data = f"{arr[1]}/{monthStringToNumber(arr[3])}/{arr[5]}"
+
   curr_dir = os.getcwd()
   html_dir_out = curr_dir + '/output/'+str(num_edicao)+'/htmls'
   if not os.path.exists(html_dir_out):
@@ -72,7 +102,7 @@ def preProcess(id, num_edicao):
   with open(html_dir_out + '/' + str(id) + ".html", "w") as text_file:
     text_file.write(soup.prettify())
 
-  return links_name
+  return (links_name, data)
 
 def saveFile(id, num_edicao, url):
   extension = url.split('.')[-1]
@@ -98,7 +128,7 @@ def saveFile(id, num_edicao, url):
 
   return path.split('.')[0]
 
-def convertToPDF(file_path, output_path, wk=False):
+def convertToPDF(file_path, output_path, wk=False, data="1/1/1111"):
   if not os.path.exists(output_path):
     os.makedirs(output_path)
   ext = (file_path.split('/')[-1]).split('.')[-1]
@@ -108,12 +138,9 @@ def convertToPDF(file_path, output_path, wk=False):
   else:
     if wk:
       file_name = ".".join((file_path.split('/')[-1]).split('.')[0:-1])
-      dia = 1
-      mes = 1
-      ano = 1
-      texto_rodape = f"Esta é uma reprodução digitalizada do conteúdo presente no DOM nº {num_edic}, de {dia}/{mes}/{ano}.\nhttps://dom-web.pbh.gov.br"
+      texto_rodape = f"Esta é uma reprodução digitalizada do conteúdo presente no DOM nº {num_edic}, de {data}.\nhttps://dom-web.pbh.gov.br"
       print("WkHtmlToPdf %s --> %s" % (file_path, output_path + file_name + ".pdf"))
-      subprocess.run(["wkhtmltopdf", "--footer-font-size", "8", "--footer-center", texto_rodape, file_path, output_path + file_name + ".pdf"])
+      subprocess.run(["wkhtmltopdf", "-B", "20", "--footer-spacing", "10", "--footer-font-size", "8", "--footer-center", texto_rodape, file_path, output_path + file_name + ".pdf"])
     else:
       subprocess.run(["lowriter", "--headless", "--convert-to", "pdf", "--outdir", output_path, file_path])
 
@@ -130,11 +157,11 @@ def convertAllAnexosToPDF(id, num_edicao):
     print('Convertendo arquivo: '+filename)
     convertToPDF(input_dir+'/'+filename, output_dir)
 
-def convertAtoToPDF(id, num_edicao):
+def convertAtoToPDF(id, num_edicao, data):
   curr_dir   = os.getcwd()
   input_dir  = curr_dir + '/output/' + str(num_edicao) + '/htmls/' + str(id) + '.html'
   output_dir = curr_dir + '/output/' + str(num_edicao) + '/pdfs-sem-anexos/'
-  convertToPDF(input_dir, output_dir, True)
+  convertToPDF(input_dir, output_dir, True, data)
 
 def mergePDF(pdf_path_1, pdf_path_2, out_path):
   # resolvendo o problema do ghostscript nao aceitar um output igual a um dos inputs
@@ -224,9 +251,9 @@ def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True):
         try:
           id = int(id)
           print('---------------------------- ATO: %s ----------------------------------------' % str(id))
-          links = preProcess(id, num_edicao)
+          links, data = preProcess(id, num_edicao)
           convertAllAnexosToPDF(id, num_edicao)
-          convertAtoToPDF(id, num_edicao)
+          convertAtoToPDF(id, num_edicao, data)
           for link in links:
             print("Inserindo ao pdf root: "+link)
             insertPDFAnexoToPDFAto(id, num_edicao, link)
