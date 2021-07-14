@@ -1,0 +1,113 @@
+convert /home/ceci/dom-webscraper/files/2108/919707/to-convert/dom2904-bhtrans-encarte.rtf -> /home/ceci/dom-webscraper/files/2108/919707/pdfs/dom2904-bhtrans-encarte.pdf using filter : writer_pdf_Export
+convert /home/ceci/dom-webscraper/files/2108/919708/to-convert/dom2904-zoo.rtf -> /home/ceci/dom-webscraper/files/2108/919708/pdfs/dom2904-zoo.pdf using filter : writer_pdf_Export
+:::::::::::::::::::::::::::::::::::::
+Wed Jul 14 11:48:37 2021
+============================ Edicao: 2108 ==================================================
+limpando files /home/ceci/dom-webscraper/files/2108
+limpando output /home/ceci/dom-webscraper/output/2108
+---------------------------- ATO: 919689 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919689.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919689.pdf
+[]
+---------------------------- ATO: 919702 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919702.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919702.pdf
+[]
+---------------------------- ATO: 919684 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919684.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919684.pdf
+[]
+---------------------------- ATO: 919691 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919691.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919691.pdf
+[]
+---------------------------- ATO: 919692 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919692.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919692.pdf
+[]
+---------------------------- ATO: 919728 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919728.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919728.pdf
+[]
+---------------------------- ATO: 919722 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919722.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919722.pdf
+[]
+---------------------------- ATO: 919710 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919710.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919710.pdf
+[]
+---------------------------- ATO: 919711 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919711.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919711.pdf
+[]
+---------------------------- ATO: 919712 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919712.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919712.pdf
+[]
+---------------------------- ATO: 919721 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919721.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919721.pdf
+[]
+---------------------------- ATO: 919729 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919729.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919729.pdf
+[]
+---------------------------- ATO: 919701 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919701.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919701.pdf
+[]
+---------------------------- ATO: 919688 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919688.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919688.pdf
+[]
+---------------------------- ATO: 919693 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919693.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919693.pdf
+[]
+---------------------------- ATO: 919716 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919716.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919716.pdf
+[]
+---------------------------- ATO: 919705 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919705.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919705.pdf
+[]
+---------------------------- ATO: 919686 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919686.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919686.pdf
+[]
+---------------------------- ATO: 919720 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919720.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919720.pdf
+[]
+---------------------------- ATO: 919690 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919690.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919690.pdf
+[]
+---------------------------- ATO: 919709 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919709.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919709.pdf
+[]
+---------------------------- ATO: 919732 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919732.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919732.pdf
+[]
+---------------------------- ATO: 919700 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919700.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919700.pdf
+[]
+---------------------------- ATO: 919717 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919717.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919717.pdf
+[]
+---------------------------- ATO: 919695 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919695.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919695.pdf
+[]
+---------------------------- ATO: 919687 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919687.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919687.pdf
+[]
+---------------------------- ATO: 919694 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919694.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919694.pdf
+[]
+---------------------------- ATO: 919707 ----------------------------------------
+Salvando arquivo: /dom/download?x=/Files/File/docs/2004_05_03_Arq01/dom2904-bhtrans-encarte.rtf
+Convertendo arquivo: dom2904-bhtrans-encarte.rtf
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919707.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919707.pdf
+['dom2904-bhtrans-encarte']
+Inserindo ao pdf root: dom2904-bhtrans-encarte
+Mesclando: '/home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919707.pdf' com '/home/ceci/dom-webscraper/files/2108/919707/pdfs/dom2904-bhtrans-encarte.pdf'
+---------------------------- ATO: 919723 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919723.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919723.pdf
+[]
+---------------------------- ATO: 919708 ----------------------------------------
+Salvando arquivo: /dom/download?x=/Files/File/docs/2004_05_03_Arq02/dom2904-zoo.rtf
+Convertendo arquivo: dom2904-zoo.rtf
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919708.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919708.pdf
+['dom2904-zoo']
+Inserindo ao pdf root: dom2904-zoo
+Mesclando: '/home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919708.pdf' com '/home/ceci/dom-webscraper/files/2108/919708/pdfs/dom2904-zoo.pdf'
+---------------------------- ATO: 919699 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919699.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919699.pdf
+[]
+---------------------------- ATO: 919713 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919713.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919713.pdf
+[]
+---------------------------- ATO: 919719 ----------------------------------------
+WkHtmlToPdf /home/ceci/dom-webscraper/output/2108/htmls/919719.html --> /home/ceci/dom-webscraper/output/2108/pdfs-sem-anexos/919719.pdfconvert /home/ceci/dom-webscraper/files/2108/919725/to-convert/ANEXO I.rtf -> /home/ceci/dom-webscraper/files/2108/919725/pdfs/ANEXO I.pdf using filter : writer_pdf_Export

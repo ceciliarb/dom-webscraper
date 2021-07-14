@@ -14,7 +14,7 @@ import shutil
 import requests
 import subprocess
 import traceback
-from bs4 import BeautifulSoup, Comment
+from bs4 import BeautifulSoup, Comment, Tag
 
 def find_comment_sibling(soup, inner_text):
   tag = soup.find(text=lambda text:isinstance(text, Comment) and inner_text in text )
@@ -63,24 +63,6 @@ def preProcess(id, num_edicao):
   # alterando cabecalho (grayscale)
   cabecalho_local = "http://localhost:8000/assets/Logo-dom-Belo-Horizonte_grayscale.jpg"
   clean_content = clean_content.replace("../imagens/Logo-dom-Belo-Horizonte.jpg", cabecalho_local)
-
-  # extrai link de arquivo de download
-  exts  = '(?:\.doc|\.docx|\.rtf|\.xls|\.pdf|\.gif|\.jpg|\.jpeg|\.tif|\.tiff)'
-  regex = r'(<a .{0,50} href\=[\'|\"]\/dom\/.{0,50}Files.*?'+exts+'[\'|\"].{0,20}>.*?<\/a>)'
-  links_download = re.findall(regex, clean_content, flags=re.S)
-  links_name = []
-  for link in links_download:
-    if link:
-      link = re.search(r'(href\=[\'|\"]\/dom\/.{0,50}Files.*?'+exts+'[\'|\"])', link, flags=re.S).group(0)
-      link = link.replace("href='", "").replace("'", "").replace('href="', '').replace('"', '')
-      path = ".".join((link.split('/')[-1]).split('.')[0:-1])
-      ext = (link.split('/')[-1]).split('.')[-1]
-      links_name.append(path)
-      # removendo o link de download
-      clean_content = clean_content.replace(link, "#")
-      print('Salvando arquivo: '+link)
-      saveFile(id, num_edicao, link)
-
   soup = BeautifulSoup(clean_content, 'html5lib')
   # remove tags de layout
   # cabecalho
@@ -91,6 +73,43 @@ def preProcess(id, num_edicao):
   tags = tags + soup.select("script")
   for tag in tags:
     tag.extract()
+  # removendo links hidden
+  for a in soup.find_all(name="a"):
+    if len(a.contents) == 0:
+      a.extract()
+  
+  css = Tag(soup, name='style')
+#  css.append("table, img, blockquote, p, span, h1, div {page-break-inside: avoid; !important }")
+#  css.append("* {     page-break-inside: avoid; page-break-before: avoid; page-break-after: avoid;   }")
+  soup.head.append(css)
+  clean_content = soup.prettify()
+
+  # removendo comentarios
+  clean_content = re.sub(r'<!--.*?-->', "", clean_content)
+
+  # extrai link de arquivo de download
+  exts  = '(?:\.doc|\.docx|\.rtf|\.xls|\.pdf|\.gif|\.jpg|\.jpeg|\.tif|\.tiff|\.DOC|\.DOCX|\.RTF|\.XLS|\.PDF|\.GIF|\.JPG|\.JPEG|\.TIF|\.TIFF)'
+  regex = r'(<a .{0,50}?href\=[\'|\"]\/dom.{0,50}?\/Files\/.*?'+exts+'[\'|\"].{0,50}?>.*?<\/a>)'
+  
+  links_download = re.findall(regex, clean_content, flags=re.S)
+  links_name = []
+  for link in links_download:
+    if link:
+      link = re.search(r'(href\=[\'|\"]\/dom.{0,50}?Files\/.*?'+exts+'[\'|\"])', link, flags=re.S).group(0)
+      link = link.replace("href='", "").replace("'", "").replace('href="', '').replace('"', '')
+      path = ".".join((link.split('/')[-1]).split('.')[0:-1])
+      ext = (link.split('/')[-1]).split('.')[-1]
+
+      # removendo o link de download
+      clean_content = clean_content.replace(link, "#")
+      print('Salvando arquivo: '+link)
+      try:
+        saveFile(id, num_edicao, link)
+        links_name.append(path)
+      
+      except RuntimeError as e:
+        links_name.append('__FALHA__')
+
 
   arr = soup.select("div.datahoje")[0].string.split(" ")
   data = f"{arr[1]}/{monthStringToNumber(arr[3])}/{arr[5]}"
@@ -106,33 +125,41 @@ def preProcess(id, num_edicao):
 
 def saveFile(id, num_edicao, url):
   extension = url.split('.')[-1]
-  resp = requests.get("http://portal6.pbh.gov.br" + url, stream=True)
-
-  if resp.status_code == 200:
-    # salvar arquivo
-    curr_dir = os.getcwd()
-    directory = curr_dir + '/files/' + str(num_edicao) + '/' + str(id) + '/to-convert'
-    if not os.path.exists(directory):
-      os.makedirs(directory)
-    path = url.split('/')[-1]
-
-    with open(directory+'/'+path, "wb") as file:
-      if extension not in ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif']:
-        file.write(resp.content)
-      else:
-        resp.raw.decode_content = True
-        shutil.copyfileobj(resp.raw, file)
-  else:
+  
+  try:
+    resp = requests.get("http://portal6.pbh.gov.br" + url, stream=True)
+    
+    if resp.status_code == 200:
+      # salvar arquivo
+      curr_dir = os.getcwd()
+      directory = curr_dir + '/files/' + str(num_edicao) + '/' + str(id) + '/to-convert'
+      if not os.path.exists(directory):
+        os.makedirs(directory)
+      path = url.split('/')[-1]
+  
+      with open(directory+'/'+path, "wb") as f:
+        if extension not in ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif']:
+          f.write(resp.content)
+        else:
+          resp.raw.decode_content = True
+          shutil.copyfileobj(resp.raw, f)
+  
+      if os.path.getsize(f"{directory}/{path}") == 0:
+        raise RuntimeError
+  
+    else:
+      raise RuntimeError
+      
+  except:
     print('Falha ao baixar arquivo "%s"' % url)
     raise RuntimeError
 
   return path.split('.')[0]
 
-def convertToPDF(file_path, output_path, wk=False, data="1/1/1111"):
+def convertToPDF(file_path, output_path, wk=False, num_edic="", data="1/1/1111"):
   if not os.path.exists(output_path):
     os.makedirs(output_path)
   ext = (file_path.split('/')[-1]).split('.')[-1]
-  num_edic = (file_path.split('/')[-1]).split('.')[0]
   if ext == 'pdf':
     subprocess.run(["cp", file_path, output_path])
   else:
@@ -140,7 +167,7 @@ def convertToPDF(file_path, output_path, wk=False, data="1/1/1111"):
       file_name = ".".join((file_path.split('/')[-1]).split('.')[0:-1])
       texto_rodape = f"Esta é uma reprodução digitalizada do conteúdo presente no DOM nº {num_edic}, de {data}.\nhttps://dom-web.pbh.gov.br"
       print("WkHtmlToPdf %s --> %s" % (file_path, output_path + file_name + ".pdf"))
-      subprocess.run(["wkhtmltopdf", "-B", "20", "--footer-spacing", "10", "--footer-font-size", "8", "--footer-center", texto_rodape, file_path, output_path + file_name + ".pdf"])
+      subprocess.run(["wkhtmltopdf", "-q", "-B", "20", "--footer-spacing", "10", "--footer-font-size", "8", "--footer-center", texto_rodape, file_path, output_path + file_name + ".pdf"])
     else:
       subprocess.run(["lowriter", "--headless", "--convert-to", "pdf", "--outdir", output_path, file_path])
 
@@ -161,7 +188,7 @@ def convertAtoToPDF(id, num_edicao, data):
   curr_dir   = os.getcwd()
   input_dir  = curr_dir + '/output/' + str(num_edicao) + '/htmls/' + str(id) + '.html'
   output_dir = curr_dir + '/output/' + str(num_edicao) + '/pdfs-sem-anexos/'
-  convertToPDF(input_dir, output_dir, True, data)
+  convertToPDF(input_dir, output_dir, True, num_edicao, data)
 
 def mergePDF(pdf_path_1, pdf_path_2, out_path):
   # resolvendo o problema do ghostscript nao aceitar um output igual a um dos inputs
@@ -199,16 +226,18 @@ def insertPDFAtoToPDFEdicao(id, num_edicao):
   print("Mesclando: '%s' com '%s'" % (tmp_file, ato_file))
   mergePDF(tmp_file, ato_file, edi_file)
 
-def clear():
+def clear(num_edicao):
   curr_dir = os.getcwd()
   try:
     for filename in os.listdir(curr_dir):
       if filename.endswith(".html") or filename.endswith(".pdf"): 
         os.remove(filename)
-    if os.path.exists(curr_dir + "/files"):
-      shutil.rmtree(curr_dir + '/files')
-    if os.path.exists(curr_dir + "/output"):
-      shutil.rmtree(curr_dir + '/output')
+    if os.path.exists(f"{curr_dir}/files/{num_edicao}"):
+      shutil.rmtree(f'{curr_dir}/files/{num_edicao}')
+      print(f'limpando files {curr_dir}/files/{num_edicao}')
+    if os.path.exists(f"{curr_dir}/output/{num_edicao}"):
+      print(f'limpando output {curr_dir}/output/{num_edicao}')
+      shutil.rmtree(f'{curr_dir}/output/{num_edicao}')
   except OSError as e:
     print("Error: %s" % e.strerror)
 
@@ -216,7 +245,8 @@ def markAs(num_edic, id, tipo):
   input_dir = os.curdir+"/input/"
   if not os.path.exists(input_dir+"done/"):
     os.makedirs(input_dir+"done/")
-  os.rename(input_dir+num_edic+".txt", input_dir+"done/"+num_edic+".txt")
+  if os.path.exists(input_dir+num_edic+".txt"):
+    os.rename(input_dir+num_edic+".txt", input_dir+"done/"+num_edic+".txt")
   with open(os.curdir+'/logs/'+tipo+'_' + str(id) + ".txt", "a") as text_file:
     text_file.write(str(num_edic)+"\n")
 
@@ -229,53 +259,69 @@ def markAsProblem(path, id):
 def markAsDoneBefore(path, id):
   markAs(path, id, 'migradas_anteriormente')
 
-def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True):
+def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True, output_dir="edicoes/"):
   try:
     if(bClear): 
-      clear()
+      clear(num_edicao)
     out_dir  = "output/"+str(num_edicao)+"/"
     edi_file = out_dir+str(num_edicao)+".pdf"
-    edi_dir  = "edicoes/"
+    edi_dir  = output_dir
     subprocess.run(["mkdir", "-p", out_dir, edi_dir])
     paths = []
     for id in ids:
-      bProblem = False
+      bMoved = False
 
       if os.path.exists(edi_file):
         print("Edicao ja existe! Pegando proxima edicao")
-        os.rename(path, edi_dir+"/../input/done/"+str(num_edicao)+".pdf")
         if bMove: markAsDoneBefore(num_edicao, str(start_time))
+        bMoved = True
         continue
 
       else:
+        id = int(id)
+        print('---------------------------- ATO: %s ----------------------------------------' % str(id))
         try:
-          id = int(id)
-          print('---------------------------- ATO: %s ----------------------------------------' % str(id))
           links, data = preProcess(id, num_edicao)
           convertAllAnexosToPDF(id, num_edicao)
           convertAtoToPDF(id, num_edicao, data)
+
+          print(links)
           for link in links:
             print("Inserindo ao pdf root: "+link)
-            insertPDFAnexoToPDFAto(id, num_edicao, link)
-    
+            if link != '__FALHA__':
+              insertPDFAnexoToPDFAto(id, num_edicao, link)
+
           if links:
-            paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
+            if '__FALHA__' in links:
+              if bMove: 
+                markAsProblem(num_edicao, str(start_time))
+                bMoved = True
+              if len(set(links)) == 1:
+                paths.append(out_dir+"pdfs-sem-anexos/"+str(id)+".pdf")
+              else:
+                paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
+            else:
+              paths.append(out_dir+"pdfs-com-anexos/"+str(id)+".pdf")
           else:
             paths.append(out_dir+"pdfs-sem-anexos/"+str(id)+".pdf")
 
         except RuntimeError as e:
           print("Erro! Pegando proxima edicao")
-          if bMove: markAsProblem(num_edicao, str(start_time))
-          bProblem = True
+          if bMove: 
+            markAsProblem(num_edicao, str(start_time))
+            bMoved = True
           continue
 
     subprocess.run(["gs", "-dBATCH", "-dNOPAUSE", "-q", "-sDEVICE=pdfwrite", "-sOutputFile="+edi_dir+str(num_edicao)+".pdf", *paths])
-    if bMove and not bProblem: markAsDone(num_edicao, str(start_time))
+    if bMove and not bMoved: 
+      markAsDone(num_edicao, str(start_time))
+      bMoved = True
     
   except Exception:
     print("Erro ao gerar edicao %s" % num_edicao)
     print("Erro %s" % traceback.print_exc())
-    if bMove: markAsProblem(num_edicao, str(start_time))
+    if bMove and not bMoved: 
+      markAsProblem(num_edicao, str(start_time))
 
 if __name__ == "__main__":
     import sys
