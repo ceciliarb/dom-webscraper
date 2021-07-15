@@ -3,6 +3,7 @@
 # - sudo apt install libreoffice            #
 # - sudo apt install ghostscript            #
 # - sudo apt install wkhtmltopdf            #
+# - sudo apt install unzip                  #
 # -  pip install requests                   #
 # -  pip install beautifulsoup4             #
 # -  pip install html5lib                   #
@@ -88,24 +89,22 @@ def preProcess(id, num_edicao):
   clean_content = re.sub(r'<!--.*?-->', "", clean_content)
 
   # extrai link de arquivo de download
-  exts  = '(?:\.doc|\.docx|\.rtf|\.xls|\.pdf|\.gif|\.jpg|\.jpeg|\.tif|\.tiff|\.DOC|\.DOCX|\.RTF|\.XLS|\.PDF|\.GIF|\.JPG|\.JPEG|\.TIF|\.TIFF)'
-  regex = r'(<a .{0,50}?href\=[\'|\"]\/dom.{0,50}?\/Files\/.*?'+exts+'[\'|\"].{0,50}?>.*?<\/a>)'
+  exts  = '(?:zip|doc|docx|rtf|xls|xlt|pdf|ps|gif|jpg|jpeg|tif|tiff|ZIP|DOC|DOCX|RTF|XLS|XLT|PDF|PS|GIF|JPG|JPEG|TIF|TIFF)'
+  regex = r'(<a .{0,50}?href\=[\'|\"]\/dom.{0,50}?\/Files\/.*?\.'+exts+'[\'|\"].{0,50}?>.*?<\/a>)'
   
   links_download = re.findall(regex, clean_content, flags=re.S)
   links_name = []
   for link in links_download:
     if link:
-      link = re.search(r'(href\=[\'|\"]\/dom.{0,50}?Files\/.*?'+exts+'[\'|\"])', link, flags=re.S).group(0)
+      link = re.search(r'(href\=[\'|\"]\/dom.{0,50}?Files\/.*?\.'+exts+'[\'|\"])', link, flags=re.S).group(0)
       link = link.replace("href='", "").replace("'", "").replace('href="', '').replace('"', '')
-      path = ".".join((link.split('/')[-1]).split('.')[0:-1])
-      ext = (link.split('/')[-1]).split('.')[-1]
 
       # removendo o link de download
       clean_content = clean_content.replace(link, "#")
       print('Salvando arquivo: '+link)
       try:
-        saveFile(id, num_edicao, link)
-        links_name.append(path)
+        arquivos = saveFile(id, num_edicao, link)
+        links_name = links_name + arquivos
       
       except RuntimeError as e:
         links_name.append('__FALHA__')
@@ -124,37 +123,59 @@ def preProcess(id, num_edicao):
   return (links_name, data)
 
 def saveFile(id, num_edicao, url):
-  extension = url.split('.')[-1]
   
   try:
-    resp = requests.get("http://portal6.pbh.gov.br" + url, stream=True)
-    
-    if resp.status_code == 200:
-      # salvar arquivo
-      curr_dir = os.getcwd()
-      directory = curr_dir + '/files/' + str(num_edicao) + '/' + str(id) + '/to-convert'
-      if not os.path.exists(directory):
-        os.makedirs(directory)
-      path = url.split('/')[-1]
+#    extension = url.split('.')[-1]
+#    resp = requests.get("http://portal6.pbh.gov.br" + url, stream=True)
+#    
+#    if resp.status_code == 200:
+#      # salvar arquivo
+#      curr_dir = os.getcwd()
+#      directory = curr_dir + '/files/' + str(num_edicao) + '/' + str(id) + '/to-convert'
+#      if not os.path.exists(directory):
+#        os.makedirs(directory)
+#      path = url.split('/')[-1]
+#  
+#      with open(directory+'/'+path, "wb") as f:
+#        if extension not in ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif']:
+#          f.write(resp.content)
+#        else:
+#          resp.raw.decode_content = True
+#          shutil.copyfileobj(resp.raw, f)
   
-      with open(directory+'/'+path, "wb") as f:
-        if extension not in ['gif', 'jpeg', 'jpg', 'png', 'tiff', 'tif']:
-          f.write(resp.content)
-        else:
-          resp.raw.decode_content = True
-          shutil.copyfileobj(resp.raw, f)
+#      if os.path.getsize(f"{directory}/{path}") == 0:
+#        raise RuntimeError
   
-      if os.path.getsize(f"{directory}/{path}") == 0:
-        raise RuntimeError
-  
-    else:
+#    else:
+#      raise RuntimeError
+
+    arquivos = []
+    curr_dir = os.getcwd()
+    directory = curr_dir + '/files/' + str(num_edicao) + '/' + str(id) + '/to-convert'
+    arquivo = url.split('/')[-1]
+    if not os.path.exists(directory):
+      os.makedirs(directory)
+    subprocess.run(["wget", f"http://portal6.pbh.gov.br{url}", "-O", f"{directory}/{arquivo}"])
+
+    if os.path.getsize(f"{directory}/{arquivo}") == 0:
       raise RuntimeError
-      
+    else: 
+      if arquivo.split('.')[1].lower() == 'zip':
+        subprocess.run(["unzip", "-j", f"{directory}/{arquivo}", "-d", directory])
+        arqs = os.listdir(directory)
+        for arq in arqs:
+          if arq.split('.')[1].lower != 'zip':
+            arquivos.append(arq.split('.')[0])
+          else:
+            os.remove(f"{directory}/{arquivo}")
+      else:
+        arquivos.append(arquivo.split('.')[0])
+
   except:
     print('Falha ao baixar arquivo "%s"' % url)
     raise RuntimeError
 
-  return path.split('.')[0]
+  return arquivos
 
 def convertToPDF(file_path, output_path, wk=False, num_edic="", data="1/1/1111"):
   if not os.path.exists(output_path):
@@ -261,8 +282,8 @@ def markAsDoneBefore(path, id):
 
 def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True, output_dir="edicoes/"):
   try:
-    if(bClear): 
-      clear(num_edicao)
+ #   if(bClear): 
+ #     clear(num_edicao)
     out_dir  = "output/"+str(num_edicao)+"/"
     edi_file = out_dir+str(num_edicao)+".pdf"
     edi_dir  = output_dir
@@ -282,7 +303,7 @@ def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True, output_
         print('---------------------------- ATO: %s ----------------------------------------' % str(id))
         try:
           links, data = preProcess(id, num_edicao)
-          convertAllAnexosToPDF(id, num_edicao)
+#          convertAllAnexosToPDF(id, num_edicao)
           convertAtoToPDF(id, num_edicao, data)
 
           print(links)
