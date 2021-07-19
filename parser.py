@@ -4,6 +4,7 @@
 # - sudo apt install ghostscript            #
 # - sudo apt install wkhtmltopdf            #
 # - sudo apt install unzip                  #
+# - sudo apt install wget                   #
 # -  pip install requests                   #
 # -  pip install beautifulsoup4             #
 # -  pip install html5lib                   #
@@ -165,11 +166,11 @@ def saveFile(id, num_edicao, url):
         arqs = os.listdir(directory)
         for arq in arqs:
           if arq.split('.')[1].lower != 'zip':
-            arquivos.append(arq.split('.')[0])
+            arquivos.append(".".join(arq.split('.')[:-1]))
           else:
             os.remove(f"{directory}/{arquivo}")
       else:
-        arquivos.append(arquivo.split('.')[0])
+        arquivos.append(".".join(arquivo.split('.')[:-1]))
 
   except:
     print('Falha ao baixar arquivo "%s"' % url)
@@ -282,8 +283,8 @@ def markAsDoneBefore(path, id):
 
 def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True, output_dir="edicoes/"):
   try:
- #   if(bClear): 
- #     clear(num_edicao)
+    if(bClear): 
+      clear(num_edicao)
     out_dir  = "output/"+str(num_edicao)+"/"
     edi_file = out_dir+str(num_edicao)+".pdf"
     edi_dir  = output_dir
@@ -303,7 +304,7 @@ def parseFiles(ids, num_edicao=0, start_time=0, bClear=True, bMove=True, output_
         print('---------------------------- ATO: %s ----------------------------------------' % str(id))
         try:
           links, data = preProcess(id, num_edicao)
-#          convertAllAnexosToPDF(id, num_edicao)
+          convertAllAnexosToPDF(id, num_edicao)
           convertAtoToPDF(id, num_edicao, data)
 
           print(links)
